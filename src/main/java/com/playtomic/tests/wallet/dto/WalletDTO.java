@@ -41,14 +41,5 @@ public class WalletDTO {
     public void setBalance(double balance) {
         this.balance = balance;
     }
-
-    // This amount can be positive or negative
-    public void updateBalance(double amount) {
-        this.balance += amount;
-    }
-
-    public String toString() {
-        return "Wallet with identifier " + walletNumberId + " has a value of " + balance;
-    }
 }
 

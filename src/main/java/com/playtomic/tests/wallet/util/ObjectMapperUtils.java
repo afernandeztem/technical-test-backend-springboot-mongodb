@@ -7,26 +7,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author ragcrix
- */
 public class ObjectMapperUtils {
 
     private static ModelMapper modelMapper;
 
     /**
-     * Model mapper property setting are specified in the following block.
-     * Default property matching strategy is set to Strict see {@link MatchingStrategies}
-     * Custom mappings are added using {@link ModelMapper#addMappings(PropertyMap)}
+     * By choosing STRICT strategy, it means that it is a mapping where each field
+     * of the original object must have one in the target object.
      */
     static {
         modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
-    /**
-     * Hide from public usage.
-     */
     private ObjectMapperUtils() {
     }
 

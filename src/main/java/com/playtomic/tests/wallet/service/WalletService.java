@@ -4,6 +4,7 @@ import com.playtomic.tests.wallet.dto.ReloadPaymentDTO;
 import com.playtomic.tests.wallet.model.Wallet;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface WalletService {
 
@@ -16,5 +17,5 @@ public interface WalletService {
     // Delete method added for testing
     void deleteWalletById(String id);
 
-    Wallet reloadWallet(ReloadPaymentDTO reloadPaymentDTO);
+    CompletableFuture<Double> reloadWallet(ReloadPaymentDTO reloadPaymentDTO);
 }

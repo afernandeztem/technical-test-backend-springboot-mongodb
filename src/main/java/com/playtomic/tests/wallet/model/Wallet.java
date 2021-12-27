@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Wallet {
     @Id
     private String systemId;
-    /*
-     ** I don't think it is appropriate for the user to know the id within
-     ** our database so I have created a public identifier for the wallet (walletNumberId).
+    /**
+     * I don't think it is appropriate for the user to know the id within
+     * our database, so I have created a public identifier for the wallet (walletNumberId).
      */
     private String walletNumberId;
     private double balance;
@@ -50,9 +50,5 @@ public class Wallet {
     // This amount can be positive or negative
     public void updateBalance(double amount) {
         this.balance += amount;
-    }
-
-    public String toString() {
-        return "Wallet with identifier " + walletNumberId + " has a value of " + balance;
     }
 }

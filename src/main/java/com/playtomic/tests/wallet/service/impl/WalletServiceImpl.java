@@ -7,9 +7,11 @@ import com.playtomic.tests.wallet.service.StripeService;
 import com.playtomic.tests.wallet.service.StripeServiceException;
 import com.playtomic.tests.wallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -27,7 +29,11 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public Wallet findByWalletNumberId(String id) {
-        return walletRepository.findByWalletNumberId(id);
+        Wallet wallet = walletRepository.findByWalletNumberId(id);
+        if (wallet == null) {
+            throw new RuntimeException("No wallet found with id: " + id);
+        }
+        return wallet;
     }
 
     @Override
@@ -41,12 +47,13 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Wallet reloadWallet(ReloadPaymentDTO reloadPaymentDTO) throws StripeServiceException {
+    @Async
+    public CompletableFuture<Double> reloadWallet(ReloadPaymentDTO reloadPaymentDTO) throws StripeServiceException {
         Wallet wallet = walletRepository.findByWalletNumberId(reloadPaymentDTO.getWalletNumberId());
         stripeService.charge(reloadPaymentDTO.getCreditCard(), reloadPaymentDTO.getAmount());
         wallet.updateBalance(reloadPaymentDTO.getAmount().doubleValue());
         walletRepository.save(wallet);
-        return wallet;
+        return CompletableFuture.completedFuture(wallet.getBalance());
     }
 
 }

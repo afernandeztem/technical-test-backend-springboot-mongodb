@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/wallets")
@@ -46,12 +47,13 @@ public class WalletController {
         return new ResponseEntity("Wallet added successfully", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/reloadWallet")
-    public WalletDTO reloadWallet(@RequestBody ReloadPaymentDTO reloadPaymentDTO) {
+    @PostMapping(value = "/reloadWallet")
+    public ResponseEntity<?> reloadWallet(@RequestBody ReloadPaymentDTO reloadPaymentDTO) throws ExecutionException, InterruptedException {
         log.info("Requested to reload wallet with Wallet Number id: " + reloadPaymentDTO.getWalletNumberId()
                 + " with an amount of " + reloadPaymentDTO.getAmount() + "  through the card "
                 + reloadPaymentDTO.getCreditCard());
-        return ObjectMapperUtils.map(walletService.reloadWallet(reloadPaymentDTO), WalletDTO.class);
+        double availableMoney = walletService.reloadWallet(reloadPaymentDTO).get();
+        return new ResponseEntity("Available money on the Wallet after reload is " + availableMoney, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{walletNumber}")
