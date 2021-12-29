@@ -18,16 +18,16 @@ Consider that this service must work in a microservices environment in high avai
 
 # Api Testing
 1. Save a wallet.
-- Post petition as: localhost:8090/wallets/save with the body as:
+- Post petition as: **localhost:8090/wallets/save** with the body as:
 {
     "systemId" : "61c8377bc8af4074b7fb8008",
     "walletNumberId" : "12341234",
     "balance" : 100
 }
 2. Get a wallet using its identifier.
-- Get petition as: localhost:8090/wallets/byWalletNumber/12341234
+- Get petition as: **localhost:8090/wallets/byWalletNumber/12341234**
 3. Top-up money in that wallet using a credit card number. It has to charge that amount internally using a third-party platform.
-- Post petition as: localhost:8090/wallets/reloadWallet/ with the body as: 
+- Post petition as: **localhost:8090/wallets/reloadWallet/** with the body as: 
 {
     "walletNumberId" : "12341234",
     "amount" : 20,
